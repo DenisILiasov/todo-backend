@@ -14,6 +14,11 @@ const userShema = new mongoose.Schema({
         type: String,
         required: true
     },
+    todo: {
+        type: Array,
+        required: true,
+        default: []
+    }
 }, 
 {
     timestamps: true,

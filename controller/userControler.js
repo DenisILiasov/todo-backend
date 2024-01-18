@@ -4,6 +4,7 @@ import UserModel from '../models/user.js'
 
 
 
+
 export const register = async (req, res) => {
     try {
         const errors = validationResult(req)
@@ -48,9 +49,6 @@ export const login = async (req, res) => {
                 message: 'Неверный логин или пароль'
             })
         }
-      
-    
-
         res.json({...user._doc})
     } catch (error) {
         console.log(error)
@@ -60,16 +58,21 @@ export const login = async (req, res) => {
     }
 }
 
-export const getMe = async (req, res) => {
+export const createUserTodo = async (req, res) => {
     try {
-        const user = await UserModel.findById(req.userId)
-        if(!user){
-            return res.status(404).json({
-                message: 'Пользователь не найден'
-            })
-        }
-        res.json({...user._doc})
-    } catch (error) {
+        const userId = req.params.id;
+        await UserModel.updateOne({_id: userId}, {
+            todo: req.body.todo
+        })
+
+        res.json({
+            message: 'Добавили задачу'
+        })
         
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            message: 'Не удалось добавить задачу'
+        })
     }
 }
